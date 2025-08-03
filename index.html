@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ImgiX Generator</title>
+  <title>ImgiX</title>
   <style>
     body {
       margin: 0;
@@ -45,6 +45,7 @@
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
+      margin: 5px;
     }
     #result {
       margin-top: 20px;
@@ -62,6 +63,7 @@
   <div class="modal">
     <input id="prompt" placeholder="Введите запрос (например: кот в очках)" />
     <button onclick="generate()">Сгенерировать</button>
+    <button onclick="searchImage()">Найти в Google</button>
     <div id="result"></div>
   </div>
 
@@ -77,14 +79,25 @@
 
       result.innerHTML = "<p>Генерация изображения... ⏳</p>";
 
-      // Пока просто вставляем картинку-заглушку
+      const imgUrl = `https://source.unsplash.com/600x400/?${encodeURIComponent(prompt)}`;
+
       setTimeout(() => {
         result.innerHTML = `
           <p><strong>Результат для:</strong> "${prompt}"</p>
-          <img src="https://source.unsplash.com/600x400/?${encodeURIComponent(prompt)}" alt="Generated image">
+          <img src="${imgUrl}" alt="Generated image" onerror="this.onerror=null; this.src='https://placekitten.com/600/400';">
         `;
       }, 1000);
     }
+
+    function searchImage() {
+      const prompt = document.getElementById("prompt").value.trim();
+      if (!prompt) {
+        alert("Введите запрос!");
+        return;
+      }
+      const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(prompt)}`;
+      window.open(url, '_blank');
+    }
   </script>
 </body>
-</html>
+  </html>
